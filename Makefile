@@ -1,4 +1,4 @@
-EXECUTABLES = int_ring int_ring_array jacobi
+EXECUTABLES = int_ring int_ring_array jacobi-mpi
 COMPILER = mpicc 
 FLAGS = -O3 -Wall
 
@@ -10,7 +10,7 @@ int_ring: int_ring.c
 int_ring_array: int_ring_array.c 
 	$(COMPILER) $(FLAGS) $^ -o $@
 
-jacobi: jacobi.c
+jacobi-mpi: jacobi-mpi.c
 	$(COMPILER) $(FLAGS) $^ -o $@
 
 clean:

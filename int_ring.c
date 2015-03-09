@@ -47,7 +47,7 @@ int main( int argc, char *argv[])
   get_timestamp(&time2);
   double elapsed = timestamp_diff_in_seconds(time1, time2);
 
-  if(rank == 0){
+  if(rank == 0) {
     printf("Loops: %d, Sum: %d\n", i, message);
     printf("Total messages passed: %d\n", i * size);
     printf("Time elaspsed: %f seconds\n", elapsed);

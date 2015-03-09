@@ -3,7 +3,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <mpi.h>
-
+#include "util.h"
 
 void Jacobi_step(double *u_k, int N, int size, double h);
 double norm(double *u_k, int N, double h);
@@ -12,8 +12,7 @@ int main(int argc, char **argv) {
 
   int N, passes, i;
   int rank, size;
-  double h, eps, res, init;
-  double message;
+  double h, message;
   double *u;
   MPI_Status status;
 
@@ -42,6 +41,9 @@ int main(int argc, char **argv) {
 // compute the initial norm
 //  init = norm(u, N, h);
 //  eps = init / 10e6;
+
+  timestamp_type time1, time2;
+  get_timestamp(&time1);
 
   for(i=0; i< passes; ++i) {
 
@@ -84,12 +86,21 @@ int main(int argc, char **argv) {
     }
 
   }
+  get_timestamp(&time2);
+  double elapsed = timestamp_diff_in_seconds(time1, time2);
 
-  if(rank == 0){
-    for(i = 1; i < N / size + 2; i++)
-      printf("%1.4f %f\n", 1.0/ ((double)N) * i, u[i]);
+  // print first part of the solution to verify correctness
+  if(rank == 0) {
+    //    for(i = 1; i < N / size + 2; i += size)
+    //      printf("%1.4f %f\n", 1.0/ ((double)N) * i, u[i]);
+    printf("Iterations: %d\n", passes);
+    printf("Grid points: %d\n", N);
+    printf("Number of cores %d\n", size);
+    printf("Time elaspsed: %f seconds\n", elapsed);    
   }
 
+
+  
   //   if (i % 10 == 0) {
   //     res = norm(u, N, h);
   //     printf("%d: %f\n", i, res);
